@@ -25,6 +25,9 @@
 // +-------------------------------------------------------------------------
 #pragma once
 
+#define ENSURE(...)
+#define CORK_ERROR(...)
+
 #ifndef uint
 typedef unsigned int uint;
 #endif

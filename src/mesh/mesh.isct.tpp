@@ -423,7 +423,7 @@ public:
         uint dim1 = (normdim+2)%3;
         double sign_flip = (normal.v[normdim] < 0.0)? -1.0 : 1.0;
         
-        struct triangulateio in, out;
+        struct triangulateio in{}, out{};
         
         /* Define input points. */
         in.numberofpoints           = points.size();

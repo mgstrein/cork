@@ -518,20 +518,37 @@ public:
         
         // clean up after triangulate...
             // in free
-        free(in.pointlist);
-        free(in.pointmarkerlist);
-        free(in.segmentlist);
-        free(in.segmentmarkerlist);
+        delete [] in.pointlist;
+        in.pointlist = nullptr;
+
+        delete [] in.pointmarkerlist;
+        in.pointmarkerlist = nullptr;
+
+        delete [] in.segmentlist;
+        in.segmentlist = nullptr;
+
+        delete [] in.segmentmarkerlist;
+        in.segmentmarkerlist = nullptr;
+
             // out free
         free(out.pointlist);
-        //free(out.pointattributelist);
+        out.pointlist = nullptr;
+
+        //free(out.pointattributelist;
         free(out.pointmarkerlist);
+        out.pointmarkerlist = nullptr;
+
         free(out.trianglelist);
-        //free(out.triangleattributelist);
-        //free(out.trianglearealist);
-        //free(out.neighborlist);
+        out.trianglelist = nullptr;
+
+        //free(out.triangleattributelist;
+        //free(out.trianglearealist;
+        //free(out.neighborlist;
         free(out.segmentlist);
+        out.segmentlist = nullptr;
+
         free(out.segmentmarkerlist);
+        out.segmentmarkerlist = nullptr;
         //free(out.edgelist);
         //free(out.edgemarkerlist);
     }

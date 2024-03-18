@@ -84,8 +84,11 @@ private: // helper functions
     // but not construction/destruction
     void resizeHelper(uint newsize);
     
-public: // shared data structures and data.
-    static MemPool< ShortVecBlock_Private<T,LEN> > pool;
+public : 
+	MemPool< ShortVecBlock_Private<T, LEN> > &getPool() { return pool; }
+
+private: // shared data structures and data.
+    MemPool< ShortVecBlock_Private<T,LEN> > pool;
     
 private: // instance data
     uint user_size;     // actual number of entries from client perspective
@@ -94,8 +97,7 @@ private: // instance data
     T* data;
 };
 
-template<class T, uint LEN>
-MemPool< ShortVecBlock_Private<T,LEN> > ShortVec<T,LEN>::pool;
+
 
 template<class T, uint LEN> inline
 T* ShortVec<T,LEN>::allocData(uint space, uint &allocated)
@@ -103,7 +105,7 @@ T* ShortVec<T,LEN>::allocData(uint space, uint &allocated)
     T* result;
     if(space <= LEN) {
         allocated = LEN;
-        result =  reinterpret_cast<T*>(pool.alloc());
+        result =  reinterpret_cast<T*>(getPool().alloc());
     } else {
         allocated = space;
         result = reinterpret_cast<T*>(new byte[sizeof(T)*space]);
@@ -116,7 +118,7 @@ void ShortVec<T,LEN>::deallocData(T* data_ptr, uint allocated)
 {
     //if(LEN == 2) std::cout << "        Deallocing: " << data_ptr << std::endl;
     if(allocated <= LEN)
-        pool.free(reinterpret_cast< ShortVecBlock_Private<T,LEN>* >(data_ptr));
+        getPool().free(reinterpret_cast< ShortVecBlock_Private<T,LEN>* >(data_ptr));
     else
         delete[] reinterpret_cast<byte*>(data_ptr);
 }

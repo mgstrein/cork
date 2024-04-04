@@ -28,6 +28,12 @@
 #define ENSURE(...)
 #define CORK_ERROR(...)
 
+#if defined(CORK_BUILD) // Defined only when building the library
+#define CORK_EXPORT __declspec(dllexport)
+#else
+#define CORK_EXPORT __declspec(dllimport)
+#endif
+
 #ifndef uint
 typedef unsigned int uint;
 #endif
@@ -43,7 +49,7 @@ struct CorkTriMesh
     float   *vertices;
 };
 
-void freeCorkTriMesh(CorkTriMesh *mesh);
+CORK_EXPORT void freeCorkTriMesh(CorkTriMesh *mesh);
 
 // the inputs to Boolean operations must be "solid":
 //  -   closed (aka. watertight; see comment at bottom)
@@ -53,25 +59,25 @@ void freeCorkTriMesh(CorkTriMesh *mesh);
 // orientation, the object is interpreted as its unbounded complement
 
 // This function will test whether or not a mesh is solid
-bool isSolid(CorkTriMesh mesh);
+CORK_EXPORT bool isSolid(CorkTriMesh mesh);
 
 // Boolean operations follow
 // result = A U B
-void computeUnion(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
+CORK_EXPORT void computeUnion(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
 
 // result = A - B
-void computeDifference(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
+CORK_EXPORT void computeDifference(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
 
 // result = A ^ B
-void computeIntersection(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
+CORK_EXPORT void computeIntersection(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
 
 // result = A XOR B
-void computeSymmetricDifference(
+CORK_EXPORT void computeSymmetricDifference(
                         CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
 
 // Not a Boolean operation, but related:
 //  No portion of either surface is deleted.  However, the
 //  curve of intersection between the two surfaces is made explicit,
 //  such that the two surfaces are now connected.
-void resolveIntersections(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
+CORK_EXPORT void resolveIntersections(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out);
 

@@ -48,26 +48,27 @@ std::ostream &err();
 #ifndef ENSURE
 #define ENSURE(STATEMENT) { \
     if(!(STATEMENT)) { \
-        std::cerr << "ENSURE FAILED at " \
-                  << __FILE__ << ", line #" << __LINE__ << ":\n" \
-                  << "    " << #STATEMENT << std::endl; \
-        err()     << "ENSURE FAILED at " \
-                  << __FILE__ << ", line #" << __LINE__ << ":\n" \
-                  << "    " << #STATEMENT << std::endl; \
-        exit(1); \
+        if(g_corkErrorCallback) { \
+            g_corkErrorCallback(#STATEMENT, __FILE__, __LINE__); \
+        } else { \
+            std::cerr << "ENSURE FAILED at " \
+                      << __FILE__ << ", line #" << __LINE__ << ":\n" \
+                      << "    " << #STATEMENT << std::endl; \
+            exit(1); \
+        } \
     } \
 }
 #endif // ENSURE
 
-// Use ERROR to print an error message tagged with the given file/line #
 #ifndef CORK_ERROR
 #define CORK_ERROR(message) { \
-    std::cerr << "error at " \
-              << __FILE__ << ", line #" << __LINE__ << ": " \
-              << (message) << std::endl; \
-    err()     << "error at " \
-              << __FILE__ << ", line #" << __LINE__ << ": " \
-              << (message) << std::endl; \
+    if(g_corkErrorCallback) { \
+        g_corkErrorCallback(message, __FILE__, __LINE__); \
+    } else { \
+        std::cerr << "error at " \
+                  << __FILE__ << ", line #" << __LINE__ << ": " \
+                  << (message) << std::endl; \
+    } \
 }
 #endif // CORK_ERROR
 

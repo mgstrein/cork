@@ -25,14 +25,23 @@
 // +-------------------------------------------------------------------------
 #pragma once
 
-#define ENSURE(...)
-#define CORK_ERROR(...)
-
 #if defined(CORK_BUILD) // Defined only when building the library
 #define CORK_EXPORT __declspec(dllexport)
 #else
 #define CORK_EXPORT __declspec(dllimport)
 #endif
+
+// Dll consumers may provide an error callback function
+typedef void (*CorkErrorCallbackFunction)(
+	const char *in_pszExpression,
+	const char *in_pszFileName,
+	int in_lineNumber);
+
+// Global variable for the error callback function pointer
+CORK_EXPORT extern CorkErrorCallbackFunction g_corkErrorCallback;
+
+CORK_EXPORT void setCorkErrorCallback(CorkErrorCallbackFunction callback);
+
 
 #ifndef uint
 typedef unsigned int uint;

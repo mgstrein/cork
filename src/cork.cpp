@@ -27,6 +27,25 @@
 
 #include "mesh.h"
 
+#include <mutex>
+
+// Define the global variable for the error callback function pointer
+CorkErrorCallbackFunction g_corkErrorCallback = nullptr;
+
+// Define a mutex for thread-safe setting of the callback
+static std::mutex g_corkSetErrorCallbackMutex;
+
+// Define a flag to check if the callback has been set
+static bool g_isCorkErrorCallbackSet = false;
+
+// Define the function to set the global error callback function pointer
+void setCorkErrorCallback(CorkErrorCallbackFunction callback) {
+    std::lock_guard<std::mutex> lock(g_corkSetErrorCallbackMutex);
+    if (!g_isCorkErrorCallbackSet) {
+        g_corkErrorCallback = callback;
+        g_isCorkErrorCallbackSet = true;
+    }
+}
 
 void freeCorkTriMesh(CorkTriMesh *mesh)
 {

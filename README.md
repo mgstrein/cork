@@ -1,3 +1,9 @@
+Cork Boolean Library DLL Fork
+====================
+
+This fork introduces a series of enhancements tailored for Windows users, focusing on the seamless integration of Cork as a DLL within your projects. Key improvements include refined memory management to ensure efficient allocation and deallocation, the elimination of static allocations for better runtime performance, and the introduction of customizable error handling capabilities. These updates are designed to bolster reliability and flexibility, making Cork an even more robust tool for developers.
+
+
 Cork Boolean Library
 ====================
 
